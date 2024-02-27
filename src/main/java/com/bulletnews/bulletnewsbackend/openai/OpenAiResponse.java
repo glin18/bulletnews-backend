@@ -9,26 +9,29 @@ import java.util.List;
 @NoArgsConstructor
 @Data
 public class OpenAiResponse {
-    @JsonProperty("choices")
-    private List<ChoicesDTO> choices;
-    @JsonProperty("created")
-    private Integer created;
+
     @JsonProperty("id")
     private String id;
-    @JsonProperty("model")
-    private String model;
     @JsonProperty("object")
     private String object;
+    @JsonProperty("created")
+    private Integer created;
+    @JsonProperty("model")
+    private String model;
+    @JsonProperty("choices")
+    private List<ChoicesDTO> choices;
     @JsonProperty("usage")
     private UsageDTO usage;
+    @JsonProperty("system_fingerprint")
+    private String systemFingerprint;
 
     @NoArgsConstructor
     @Data
     public static class UsageDTO {
-        @JsonProperty("completion_tokens")
-        private Integer completionTokens;
         @JsonProperty("prompt_tokens")
         private Integer promptTokens;
+        @JsonProperty("completion_tokens")
+        private Integer completionTokens;
         @JsonProperty("total_tokens")
         private Integer totalTokens;
     }
@@ -36,22 +39,22 @@ public class OpenAiResponse {
     @NoArgsConstructor
     @Data
     public static class ChoicesDTO {
-        @JsonProperty("finish_reason")
-        private String finishReason;
         @JsonProperty("index")
         private Integer index;
         @JsonProperty("message")
         private MessageDTO message;
         @JsonProperty("logprobs")
         private Object logprobs;
+        @JsonProperty("finish_reason")
+        private String finishReason;
 
         @NoArgsConstructor
         @Data
         public static class MessageDTO {
-            @JsonProperty("content")
-            private String content;
             @JsonProperty("role")
             private String role;
+            @JsonProperty("content")
+            private String content;
         }
     }
 }

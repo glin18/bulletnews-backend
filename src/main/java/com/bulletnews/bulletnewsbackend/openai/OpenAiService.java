@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.reactive.function.client.WebClientResponseException;
 import reactor.core.publisher.Mono;
 
 import java.util.Arrays;
@@ -28,21 +29,31 @@ public class OpenAiService {
         this.objectMapper = objectMapper;
     }
 
-    public String generateShortArticle(String prompt) {
+    public String generateShortArticle(String title, String content, String description) {
         try {
-            String requestBody = createRequestBody(prompt);
+            String prompt = createPrompt(title, content, description);
+            Map<String, Object> requestBody = createRequestBody(prompt);
             return webClient.post()
                     .bodyValue(requestBody)
                     .retrieve()
                     .bodyToMono(OpenAiResponse.class)
                     .map(response -> response.getChoices().get(0).getMessage().getContent()).block();
+        } catch (WebClientResponseException e) {
+            log.error("Error Generating Short Article: {} Response Body: {}", e.getMessage(),
+                    e.getResponseBodyAsString());
+            return null;
         } catch (Exception e) {
-            log.error("Error Generating Short Article", e);
+            log.error("Unexpected Error Generating Short Article: {}", e.getMessage());
             return null;
         }
     }
 
-    private String createRequestBody(String prompt) throws JsonProcessingException {
+    private String createPrompt(String title, String content, String description) {
+        return String.format("Based on the following title: %s, content: %s, and description: %s, " +
+                "create a short article:", title, content, description);
+    }
+
+    private Map<String, Object> createRequestBody(String prompt) throws JsonProcessingException {
         Map<String, Object> requestMap = new HashMap<>();
         requestMap.put("model", "gpt-4");
         requestMap.put("messages", Arrays.asList(
@@ -50,7 +61,7 @@ public class OpenAiService {
                         "content provided to you"),
                 Map.of("role", "user", "content", prompt)
         ));
-        return objectMapper.writeValueAsString(requestMap);
+        return requestMap;
     }
 
 }
