@@ -8,11 +8,25 @@ import org.springframework.stereotype.Service;
 @Service
 public class NewsService {
 
-    private final NewsRepository  newsRepository;
+    private final NewsRepository newsRepository;
 
-    public boolean checkIfArticleExists(NewsApiResponse.ArticlesDTO article){
+    public boolean checkIfArticleExists(NewsApiResponse.ArticlesDTO article) {
         return newsRepository.existsByUrlOrTitleOrPublishedAt(article.getUrl(), article.getTitle(),
                 article.getPublishedAt());
+    }
+
+    public News buildAndSaveNewsFromArticleAndSummary(NewsApiResponse.ArticlesDTO article, String summary) {
+        News news = News.builder()
+                .title(article.getTitle())
+                .description(article.getDescription())
+                .summary(summary)
+                .url(article.getUrl())
+                .urlToImage(article.getUrlToImage())
+                .publishedAt(article.getPublishedAt())
+                .content(article.getContent())
+                .sourceName(article.getSource().getName())
+                .build();
+        return newsRepository.save(news);
     }
 
 }

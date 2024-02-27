@@ -27,6 +27,7 @@ public class OpenAiService {
                 .build();
     }
 
+    // TODO: 2024-02-27 Better exception handling
     public String generateShortArticle(String title, String content, String description) {
         try {
             String prompt = createPrompt(title, content, description);
@@ -39,11 +40,10 @@ public class OpenAiService {
         } catch (WebClientResponseException e) {
             log.error("Error Generating Short Article: {} Response Body: {}", e.getMessage(),
                     e.getResponseBodyAsString());
-            return null;
         } catch (Exception e) {
             log.error("Unexpected Error Generating Short Article: {}", e.getMessage());
-            return null;
         }
+        return null;
     }
 
     private String createPrompt(String title, String content, String description) {

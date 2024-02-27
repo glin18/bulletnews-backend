@@ -2,6 +2,7 @@ package com.bulletnews.bulletnewsbackend.news;
 
 import com.bulletnews.bulletnewsbackend.newsapi.NewsApiResponse;
 import com.bulletnews.bulletnewsbackend.newsapi.NewsApiService;
+import com.bulletnews.bulletnewsbackend.openai.OpenAiService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -18,11 +19,9 @@ public class NewsProcessingService {
 
     private final NewsService newsService;
 
-    public void fetchProcessAndSaveNews(){
-        // 1. Make a request to the external API to fetch news data
-        // 2. Process the data (scrape additional content, summarize, etc.)
-        // 3. Save the processed data to your database
+    private final OpenAiService openAiService;
 
+    public void fetchProcessAndSaveNews(){
         String category = "technology";
         NewsApiResponse newsApiResponse = fetchNews(category);
         Set<News> news = newsApiResponse.getArticles().stream()
@@ -38,7 +37,9 @@ public class NewsProcessingService {
     }
 
     private News processArticle(NewsApiResponse.ArticlesDTO article){
-        return null;
+        String summary = openAiService.generateShortArticle(article.getTitle(), article.getContent(),
+                article.getDescription());
+        return newsService.buildAndSaveNewsFromArticleAndSummary(article, summary);
     }
 
 }
