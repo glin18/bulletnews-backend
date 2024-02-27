@@ -37,8 +37,14 @@ public class NewsProcessingService {
     }
 
     private News processArticle(NewsApiResponseDTO.ArticlesDTO article){
-        String combinedContent = article.getTitle() + article.getContent() + article.getDescription();
+        String prompt = createPrompt(article.getTitle(), article.getContent(), article.getDescription());
+        log.info(prompt);
         return null;
+    }
+
+    private String createPrompt(String title, String content, String description){
+        return String.format("Based on the following title: %s, content: %s, and description: %s, " +
+                "create a short article:", title, content, description);
     }
 
 }
