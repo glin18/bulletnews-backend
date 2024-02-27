@@ -8,7 +8,7 @@ import java.util.List;
 
 @NoArgsConstructor
 @Data
-public class NewsApiResponseDTO {
+public class NewsApiResponse {
 
     @JsonProperty("status")
     private String status;

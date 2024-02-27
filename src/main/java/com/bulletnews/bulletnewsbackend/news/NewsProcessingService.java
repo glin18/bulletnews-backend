@@ -1,6 +1,6 @@
 package com.bulletnews.bulletnewsbackend.news;
 
-import com.bulletnews.bulletnewsbackend.newsapi.NewsApiResponseDTO;
+import com.bulletnews.bulletnewsbackend.newsapi.NewsApiResponse;
 import com.bulletnews.bulletnewsbackend.newsapi.NewsApiService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,20 +24,20 @@ public class NewsProcessingService {
         // 3. Save the processed data to your database
 
         String category = "technology";
-        NewsApiResponseDTO newsApiResponseDTO = fetchNews(category);
-        Set<News> news = newsApiResponseDTO.getArticles().stream()
+        NewsApiResponse newsApiResponse = fetchNews(category);
+        Set<News> news = newsApiResponse.getArticles().stream()
                 .filter(newsService::checkIfArticleExists)
                 .map(this::processArticle)
                 .collect(Collectors.toSet());
     }
 
-    public NewsApiResponseDTO fetchNews(String category){
-        NewsApiResponseDTO newsApiResponseDto = newsApiService.fetchTopHeadlinesByCategory(category);
-        log.info(newsApiResponseDto.toString());
-        return newsApiResponseDto;
+    public NewsApiResponse fetchNews(String category){
+        NewsApiResponse newsApiResponse = newsApiService.fetchTopHeadlinesByCategory(category);
+        log.info(newsApiResponse.toString());
+        return newsApiResponse;
     }
 
-    private News processArticle(NewsApiResponseDTO.ArticlesDTO article){
+    private News processArticle(NewsApiResponse.ArticlesDTO article){
         return null;
     }
 

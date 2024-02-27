@@ -1,6 +1,6 @@
 package com.bulletnews.bulletnewsbackend.news;
 
-import com.bulletnews.bulletnewsbackend.newsapi.NewsApiResponseDTO;
+import com.bulletnews.bulletnewsbackend.newsapi.NewsApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,7 +15,7 @@ public class NewsController {
     private final NewsProcessingService newsProcessingService;
 
     @GetMapping("/top-headlines")
-    public NewsApiResponseDTO getTopHeadlines(@RequestParam(required = false) String category) {
+    public NewsApiResponse getTopHeadlines(@RequestParam(required = false) String category) {
         return newsProcessingService.fetchNews(category);
     }
 
