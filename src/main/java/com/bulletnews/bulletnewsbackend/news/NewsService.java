@@ -1,5 +1,6 @@
 package com.bulletnews.bulletnewsbackend.news;
 
+import com.bulletnews.bulletnewsbackend.newsapi.NewsApiResponseDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

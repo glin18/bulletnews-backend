@@ -1,4 +1,4 @@
-package com.bulletnews.bulletnewsbackend.news;
+package com.bulletnews.bulletnewsbackend.newsapi;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
