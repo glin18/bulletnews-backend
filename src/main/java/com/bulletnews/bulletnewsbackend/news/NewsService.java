@@ -17,7 +17,8 @@ public class NewsService {
                 article.getPublishedAt());
     }
 
-    public News buildAndSaveNewsFromArticleAndSummary(NewsApiResponse.ArticlesDTO article, String summary) {
+    public News buildAndSaveNewsFromArticleAndSummary(NewsApiResponse.ArticlesDTO article, String summary,
+                                                      News.Category category) {
         News news = News.builder()
                 .title(article.getTitle())
                 .description(article.getDescription())
@@ -27,6 +28,7 @@ public class NewsService {
                 .publishedAt(article.getPublishedAt())
                 .content(article.getContent())
                 .sourceName(article.getSource().getName())
+                .category(category)
                 .build();
         return newsRepository.save(news);
     }

@@ -22,13 +22,13 @@ public class NewsController {
     }
 
     @GetMapping("/top-headlines")
-    public NewsApiResponse getTopHeadlines(@RequestParam(required = false) String category) {
-        return newsProcessingService.fetchNews(category);
+    public NewsApiResponse getTopHeadlines(@RequestParam() News.Category category) {
+        return newsProcessingService.fetchTopHeadlinesByCategory(category);
     }
 
     @PostMapping("/admin/news/fetch-save")
-    public Set<News> fetchAndSaveNews(){
-        return newsProcessingService.fetchProcessAndSaveNews();
+    public Set<News> fetchAndSaveNews(@RequestParam() News.Category category){
+        return newsProcessingService.fetchProcessAndSaveNews(category);
     }
 
 }

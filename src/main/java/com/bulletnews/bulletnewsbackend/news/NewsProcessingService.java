@@ -21,25 +21,28 @@ public class NewsProcessingService {
 
     private final OpenAiService openAiService;
 
-    public Set<News> fetchProcessAndSaveNews() {
-        String category = "technology";
-        NewsApiResponse newsApiResponse = fetchNews(category);
+    public void fetchProcessAndSaveNewsForEachCategory(){
+        for (News.Category category : News.Category.values()){
+            fetchProcessAndSaveNews(category);
+        }
+    }
+
+    public Set<News> fetchProcessAndSaveNews(News.Category category) {
+        NewsApiResponse newsApiResponse = fetchTopHeadlinesByCategory(category);
         return newsApiResponse.getArticles().stream()
                 .filter(article -> !newsService.checkIfArticleExists(article))
-                .map(this::processArticle)
+                .map(article -> processArticle(article, category))
                 .collect(Collectors.toSet());
     }
 
-    public NewsApiResponse fetchNews(String category) {
-        NewsApiResponse newsApiResponse = newsApiService.fetchTopHeadlinesByCategory(category);
-        log.info(newsApiResponse.toString());
-        return newsApiResponse;
+    public NewsApiResponse fetchTopHeadlinesByCategory(News.Category category) {
+        return newsApiService.fetchTopHeadlinesByCategory(category.name().toLowerCase());
     }
 
-    private News processArticle(NewsApiResponse.ArticlesDTO article) {
+    private News processArticle(NewsApiResponse.ArticlesDTO article, News.Category category) {
         String summary = openAiService.generateShortArticle(article.getTitle(), article.getContent(),
                 article.getDescription());
-        return newsService.buildAndSaveNewsFromArticleAndSummary(article, summary);
+        return newsService.buildAndSaveNewsFromArticleAndSummary(article, summary, category);
     }
 
 }
