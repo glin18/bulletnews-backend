@@ -4,6 +4,8 @@ import com.bulletnews.bulletnewsbackend.newsapi.NewsApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 @Service
 public class NewsService {
@@ -27,6 +29,10 @@ public class NewsService {
                 .sourceName(article.getSource().getName())
                 .build();
         return newsRepository.save(news);
+    }
+
+    public List<News> findAll(){
+        return newsRepository.findAll();
     }
 
 }

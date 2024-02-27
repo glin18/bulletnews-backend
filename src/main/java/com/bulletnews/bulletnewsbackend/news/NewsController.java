@@ -4,6 +4,7 @@ import com.bulletnews.bulletnewsbackend.newsapi.NewsApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Set;
 
 @RestController
@@ -12,6 +13,13 @@ import java.util.Set;
 public class NewsController {
 
     private final NewsProcessingService newsProcessingService;
+
+    private final NewsService newsService;
+
+    @GetMapping("/news")
+    public List<News> findAll(){
+        return newsService.findAll();
+    }
 
     @GetMapping("/top-headlines")
     public NewsApiResponse getTopHeadlines(@RequestParam(required = false) String category) {
