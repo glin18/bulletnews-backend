@@ -20,8 +20,10 @@ public class News {
     @Column(length = 500)
     private String title;
 
+    @Column(length = 5000)
     private String description;
 
+    @Column(length = 5000)
     private String summary;
 
     @Column(length = 1000)
@@ -32,6 +34,7 @@ public class News {
 
     private String publishedAt;
 
+    @Column(length = 5000)
     private String content;
 
     private String sourceName;

@@ -21,22 +21,22 @@ public class NewsProcessingService {
 
     private final OpenAiService openAiService;
 
-    public void fetchProcessAndSaveNews(){
+    public Set<News> fetchProcessAndSaveNews() {
         String category = "technology";
         NewsApiResponse newsApiResponse = fetchNews(category);
-        Set<News> news = newsApiResponse.getArticles().stream()
-                .filter(newsService::checkIfArticleExists)
+        return newsApiResponse.getArticles().stream()
+                .filter(article -> !newsService.checkIfArticleExists(article))
                 .map(this::processArticle)
                 .collect(Collectors.toSet());
     }
 
-    public NewsApiResponse fetchNews(String category){
+    public NewsApiResponse fetchNews(String category) {
         NewsApiResponse newsApiResponse = newsApiService.fetchTopHeadlinesByCategory(category);
         log.info(newsApiResponse.toString());
         return newsApiResponse;
     }
 
-    private News processArticle(NewsApiResponse.ArticlesDTO article){
+    private News processArticle(NewsApiResponse.ArticlesDTO article) {
         String summary = openAiService.generateShortArticle(article.getTitle(), article.getContent(),
                 article.getDescription());
         return newsService.buildAndSaveNewsFromArticleAndSummary(article, summary);
