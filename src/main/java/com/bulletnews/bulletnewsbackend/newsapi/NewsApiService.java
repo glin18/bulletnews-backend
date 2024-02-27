@@ -6,6 +6,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 @Service
 public class NewsApiService {
 
+    private final int PAGE_SIZE = 10;
     private final WebClient webClient;
     private final NewsApiConfig newsApiConfig;
 
@@ -21,6 +22,7 @@ public class NewsApiService {
                         .queryParam("country", newsApiConfig.getCountry())
                         .queryParam("apiKey", newsApiConfig.getApiKey())
                         .queryParam("category", category)
+                        .queryParam("pageSize", PAGE_SIZE)
                         .build())
                 .retrieve()
                 .bodyToMono(NewsApiResponse.class).block();
