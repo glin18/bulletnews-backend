@@ -15,7 +15,7 @@ public class NewsApiService {
         this.newsApiConfig = newsApiConfig;
     }
 
-    public Mono<NewsApiResponseDTO> fetchTopHeadlinesByCategory(String category) {
+    public NewsApiResponseDTO fetchTopHeadlinesByCategory(String category) {
         return this.webClient.get()
                 .uri(uriBuilder -> uriBuilder
                         .path("")
@@ -24,6 +24,6 @@ public class NewsApiService {
                         .queryParam("category", category)
                         .build())
                 .retrieve()
-                .bodyToMono(NewsApiResponseDTO.class);
+                .bodyToMono(NewsApiResponseDTO.class).block();
     }
 }
