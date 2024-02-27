@@ -39,4 +39,11 @@ public class News {
 
     private String sourceName;
 
+    @Enumerated(EnumType.STRING)
+    private Category category;
+
+    public enum Category {
+        TECHNOLOGY, SPORTS, CRYPTO,
+    }
+
 }
