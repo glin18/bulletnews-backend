@@ -19,14 +19,12 @@ import java.util.Map;
 public class OpenAiService {
 
     private final WebClient webClient;
-    private final ObjectMapper objectMapper;
 
-    public OpenAiService(OpenAiConfig openAiConfig, ObjectMapper objectMapper) {
+    public OpenAiService(OpenAiConfig openAiConfig) {
         this.webClient = WebClient.builder()
                 .baseUrl(openAiConfig.getBaseUrl())
                 .defaultHeader(HttpHeaders.AUTHORIZATION, "Bearer " + openAiConfig.getApiKey())
                 .build();
-        this.objectMapper = objectMapper;
     }
 
     public String generateShortArticle(String title, String content, String description) {
@@ -53,7 +51,7 @@ public class OpenAiService {
                 "create a short article:", title, content, description);
     }
 
-    private Map<String, Object> createRequestBody(String prompt) throws JsonProcessingException {
+    private Map<String, Object> createRequestBody(String prompt) {
         Map<String, Object> requestMap = new HashMap<>();
         requestMap.put("model", "gpt-4");
         requestMap.put("messages", Arrays.asList(
