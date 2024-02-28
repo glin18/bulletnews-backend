@@ -1,4 +1,4 @@
-package com.bulletnews.bulletnewsbackend.news;
+package com.bulletnews.bulletnewsbackend.newsprocessing;
 
 import org.springframework.stereotype.Service;
 

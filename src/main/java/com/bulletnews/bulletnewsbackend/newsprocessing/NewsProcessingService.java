@@ -1,5 +1,7 @@
-package com.bulletnews.bulletnewsbackend.news;
+package com.bulletnews.bulletnewsbackend.newsprocessing;
 
+import com.bulletnews.bulletnewsbackend.news.News;
+import com.bulletnews.bulletnewsbackend.news.NewsService;
 import com.bulletnews.bulletnewsbackend.newsapi.NewsApiResponse;
 import com.bulletnews.bulletnewsbackend.newsapi.NewsApiService;
 import com.bulletnews.bulletnewsbackend.openai.OpenAiService;
