@@ -1,5 +1,6 @@
 package com.bulletnews.bulletnewsbackend.news;
 
+import com.bulletnews.bulletnewsbackend.category.Category;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -39,15 +40,8 @@ public class News {
 
     private String sourceName;
 
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "category_id")
-//    private Category category;
-
-    @Enumerated(EnumType.STRING)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id")
     private Category category;
-
-    public enum Category {
-        TECHNOLOGY, SPORTS, CRYPTO,
-    }
 
 }

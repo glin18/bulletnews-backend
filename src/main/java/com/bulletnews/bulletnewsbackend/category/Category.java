@@ -15,6 +15,7 @@ public class Category {
     private Long id;
     private String name;
     private String searchTerm;
-//    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-//    private Set<News> news;
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<News> news;
+
 }

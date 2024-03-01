@@ -1,5 +1,6 @@
 package com.bulletnews.bulletnewsbackend.news;
 
+import com.bulletnews.bulletnewsbackend.category.Category;
 import com.bulletnews.bulletnewsbackend.newsapi.NewsApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,7 +19,7 @@ public class NewsService {
     }
 
     public News buildAndSaveNewsFromArticleAndSummary(NewsApiResponse.ArticlesDTO article, String summary,
-                                                      News.Category category) {
+                                                      Category category) {
         News news = News.builder()
                 .title(article.getTitle())
                 .description(article.getDescription())

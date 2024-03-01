@@ -5,7 +5,7 @@ import com.bulletnews.bulletnewsbackend.newsapi.NewsApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Set;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -15,13 +15,13 @@ public class NewsProcessingController {
     private final NewsProcessingService newsProcessingService;
 
     @GetMapping("/top-headlines")
-    public NewsApiResponse getTopHeadlines(@RequestParam() News.Category category) {
+    public NewsApiResponse getTopHeadlines(@RequestParam() String category) {
         return newsProcessingService.fetchTopHeadlinesByCategory(category);
     }
 
-    @PostMapping("/admin/news/fetch-save")
-    public Set<News> fetchAndSaveNews(@RequestParam() News.Category category){
-        return newsProcessingService.fetchProcessAndSaveNews(category);
+    @PostMapping("/news/fetch-save")
+    public List<News> fetchAndSaveNews(){
+        return newsProcessingService.fetchProcessAndSaveNewsForEachCategory();
     }
 
 }
