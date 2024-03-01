@@ -43,6 +43,11 @@ public class NewsService {
         return newsList.stream().map(this::newsToNewsResponseMapper).collect(Collectors.toList());
     }
 
+    public List<NewsResponse> findAllByCategoryId(Long categoryId) {
+        List<News> newsList = newsRepository.findAllByCategory_Id(categoryId);
+        return newsList.stream().map(this::newsToNewsResponseMapper).collect(Collectors.toList());
+    }
+
     private NewsResponse newsToNewsResponseMapper(News news){
         NewsResponse newsResponse = new NewsResponse();
         BeanUtils.copyProperties(news, newsResponse);
