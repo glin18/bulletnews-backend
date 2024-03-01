@@ -39,6 +39,10 @@ public class News {
 
     private String sourceName;
 
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "category_id")
+//    private Category category;
+
     @Enumerated(EnumType.STRING)
     private Category category;
 
