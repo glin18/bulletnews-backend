@@ -1,11 +1,15 @@
 package com.bulletnews.bulletnewsbackend.news;
 
 import com.bulletnews.bulletnewsbackend.category.Category;
+import com.bulletnews.bulletnewsbackend.news.dto.NewsResponse;
 import com.bulletnews.bulletnewsbackend.newsapi.NewsApiResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -34,8 +38,19 @@ public class NewsService {
         return newsRepository.save(news);
     }
 
-    public List<News> findAll(){
-        return newsRepository.findAll();
+    public List<NewsResponse> findAll(){
+        List<News> newsList = newsRepository.findAll();
+        return newsList.stream().map(this::newsToNewsResponseMapper).collect(Collectors.toList());
+    }
+
+    private NewsResponse newsToNewsResponseMapper(News news){
+        NewsResponse newsResponse = new NewsResponse();
+        BeanUtils.copyProperties(news, newsResponse);
+        String categoryName = Optional.ofNullable(news.getCategory())
+                .map(Category::getName)
+                .orElse("No Category");
+        newsResponse.setCategoryName(categoryName);
+        return newsResponse;
     }
 
 }

@@ -1,12 +1,10 @@
 package com.bulletnews.bulletnewsbackend.news;
 
-import com.bulletnews.bulletnewsbackend.newsapi.NewsApiResponse;
-import com.bulletnews.bulletnewsbackend.newsprocessing.NewsProcessingService;
+import com.bulletnews.bulletnewsbackend.news.dto.NewsResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Set;
 
 @RestController
 @RequiredArgsConstructor
@@ -16,7 +14,7 @@ public class NewsController {
     private final NewsService newsService;
 
     @GetMapping("/news")
-    public List<News> findAll(){
+    public List<NewsResponse> findAll(){
         return newsService.findAll();
     }
 
