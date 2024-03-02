@@ -1,6 +1,7 @@
 package com.bulletnews.bulletnewsbackend.category;
 
 import com.bulletnews.bulletnewsbackend.category.dto.CategoryDTO;
+import com.bulletnews.bulletnewsbackend.exceptions.custom.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -24,13 +25,20 @@ public class CategoryService {
     }
 
     public Category updateCategoryById(Long id, CategoryDTO request) {
-        Category category = categoryRepository.findById(id).orElseThrow();
+        Category category = findCategoryById(id);
         category.setName(request.getName());
         category.setSearchTerm(request.getSearchTerm());
         return categoryRepository.save(category);
     }
 
     public void deleteCategoryById(Long id) {
-        categoryRepository.deleteById(id);
+        Category category = findCategoryById(id);
+        categoryRepository.delete(category);
     }
+
+    private Category findCategoryById(Long id){
+        return categoryRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Category with id of " + id + " not found"));
+    }
+
 }
