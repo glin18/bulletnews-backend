@@ -43,16 +43,21 @@ public class OpenAiService {
     }
 
     private String createPrompt(String title, String content, String description) {
-        return String.format("Based on the following title: %s, content: %s, and description: %s, " +
-                "create a short article:", title, content, description);
+        return String.format("Write a concise, informative article suitable for a news website. " +
+                        "The article should be based on the following information:" +
+                        "\nTitle: %s\nContent Summary: %s\nDescription: %s\n" +
+                        "Please ensure the article is factual, easy to read, and engaging for the audience.",
+                title, content, description);
     }
 
     private Map<String, Object> createRequestBody(String prompt) {
+        String SYSTEM_CONTENT = "Your task is to generate news articles that are accurate, engaging, " +
+                "and professionally written. Focus on delivering clear information while maintaining a neutral tone. " +
+                "Avoid any form of bias or opinion. Only give the content and not the title";
         Map<String, Object> requestMap = new HashMap<>();
         requestMap.put("model", "gpt-4");
         requestMap.put("messages", Arrays.asList(
-                Map.of("role", "system", "content", "You are creating concise news articles based on " +
-                        "content provided to you"),
+                Map.of("role", "system", "content", SYSTEM_CONTENT),
                 Map.of("role", "user", "content", prompt)
         ));
         return requestMap;
