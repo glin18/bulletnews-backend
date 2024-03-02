@@ -34,6 +34,7 @@ public class NewsProcessingService {
     }
 
     public List<News> fetchProcessAndSaveNews(Category category) {
+        log.info("Fetching and processing news for category {}", category.getName());
         NewsApiResponse newsApiResponse = fetchTopHeadlinesByCategory(category.getSearchTerm());
         return newsApiResponse.getArticles().stream()
             .filter(article -> !newsService.checkIfArticleExists(article))
