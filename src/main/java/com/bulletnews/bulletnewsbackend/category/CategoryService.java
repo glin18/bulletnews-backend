@@ -29,4 +29,8 @@ public class CategoryService {
         category.setSearchTerm(request.getSearchTerm());
         return categoryRepository.save(category);
     }
+
+    public void deleteCategoryById(Long id) {
+        categoryRepository.deleteById(id);
+    }
 }
