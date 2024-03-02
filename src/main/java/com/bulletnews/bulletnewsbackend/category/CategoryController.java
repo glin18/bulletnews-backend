@@ -14,22 +14,22 @@ public class CategoryController {
     private final CategoryService categoryService;
 
     @GetMapping("")
-    public List<Category> findAll(){
+    public List<Category> findAll() {
         return categoryService.findAll();
     }
 
     @PostMapping("")
-    public Category create(@RequestBody CategoryDTO request){
+    public CategoryDTO create(@RequestBody CategoryDTO request) {
         return categoryService.createCategory(request);
     }
 
     @PutMapping("/{id}")
-    public Category updateCategoryById(@RequestBody CategoryDTO categoryDto, @PathVariable Long id){
+    public CategoryDTO updateCategoryById(@RequestBody CategoryDTO categoryDto, @PathVariable Long id) {
         return categoryService.updateCategoryById(id, categoryDto);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteCategoryById(@PathVariable Long id){
+    public void deleteCategoryById(@PathVariable Long id) {
         categoryService.deleteCategoryById(id);
     }
 

@@ -18,17 +18,17 @@ public class CategoryService {
         return categoryRepository.findAll();
     }
 
-    public Category createCategory(CategoryDTO request) {
+    public CategoryDTO createCategory(CategoryDTO request) {
         Category category = new Category();
         BeanUtils.copyProperties(request, category);
-        return categoryRepository.save(category);
+        return mapCategoryToDto(categoryRepository.save(category));
     }
 
-    public Category updateCategoryById(Long id, CategoryDTO request) {
+    public CategoryDTO updateCategoryById(Long id, CategoryDTO request) {
         Category category = findCategoryById(id);
         category.setName(request.getName());
         category.setSearchTerm(request.getSearchTerm());
-        return categoryRepository.save(category);
+        return mapCategoryToDto(categoryRepository.save(category));
     }
 
     public void deleteCategoryById(Long id) {
@@ -36,9 +36,15 @@ public class CategoryService {
         categoryRepository.delete(category);
     }
 
-    private Category findCategoryById(Long id){
+    private Category findCategoryById(Long id) {
         return categoryRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Category with id of " + id + " not found"));
+    }
+
+    private CategoryDTO mapCategoryToDto(Category category) {
+        CategoryDTO categoryDTO = new CategoryDTO();
+        BeanUtils.copyProperties(category, categoryDTO);
+        return categoryDTO;
     }
 
 }
