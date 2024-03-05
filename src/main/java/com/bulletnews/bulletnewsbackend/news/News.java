@@ -1,11 +1,15 @@
 package com.bulletnews.bulletnewsbackend.news;
 
 import com.bulletnews.bulletnewsbackend.category.Category;
+import com.bulletnews.bulletnewsbackend.users.AppUser;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Builder
 @NoArgsConstructor
@@ -43,5 +47,11 @@ public class News {
     @ManyToOne()
     @JoinColumn(name = "category_id")
     private Category category;
+
+    @ManyToMany(mappedBy = "likedNews", fetch = FetchType.LAZY)
+    private Set<AppUser> usersWhoLiked = new HashSet<>();
+
+    @ManyToMany(mappedBy = "savedNews", fetch = FetchType.LAZY)
+    private Set<AppUser> usersWhoSaved = new HashSet<>();
 
 }
