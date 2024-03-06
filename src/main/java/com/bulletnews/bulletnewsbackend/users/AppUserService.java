@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -18,13 +19,10 @@ public class AppUserService {
         return appUserRepository.findAll();
     }
 
-    public AppUser createUser(CreateUserRequest createUserRequest) {
-        AppUser user = AppUser.builder()
-                .uuid(createUserRequest.getUuid())
-                .email(createUserRequest.getEmail())
-                .lastLoginTime(Instant.now())
-                .build();
-        return appUserRepository.save(user);
+    public AppUser createOrUpdateUser(CreateUserRequest createUserRequest) {
+        String uuid = createUserRequest.getUuid();
+        Optional<AppUser> existingUser = appUserRepository.findByUuid(uuid);
+        return existingUser.map(this::updateUserLoginTime).orElseGet(() -> createUser(createUserRequest));
     }
 
     public void deleteUser(Long id) {
@@ -33,4 +31,19 @@ public class AppUserService {
         }
         appUserRepository.deleteById(id);
     }
+
+    private AppUser updateUserLoginTime(AppUser user){
+        user.setLastLoginTime(Instant.now());
+        return appUserRepository.save(user);
+    }
+
+    private AppUser createUser(CreateUserRequest createUserRequest){
+        AppUser user = AppUser.builder()
+                .uuid(createUserRequest.getUuid())
+                .email(createUserRequest.getEmail())
+                .lastLoginTime(Instant.now())
+                .build();
+        return appUserRepository.save(user);
+    }
+
 }
