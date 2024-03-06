@@ -1,9 +1,10 @@
 package com.bulletnews.bulletnewsbackend.users;
 
+import com.bulletnews.bulletnewsbackend.users.dto.CreateUserRequest;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -15,8 +16,20 @@ public class AppUserController {
     private final AppUserService appUserService;
 
     @GetMapping("")
-    public List<AppUser> findAll(){
+    public List<AppUser> findAll() {
         return appUserService.findAll();
+    }
+
+    @PostMapping("")
+    public ResponseEntity<AppUser> createUser(@RequestBody CreateUserRequest createUserRequest) {
+        AppUser createdUser = appUserService.createUser(createUserRequest);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
+        appUserService.deleteUser(id);
+        return ResponseEntity.noContent().build();
     }
 
 }
