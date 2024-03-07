@@ -1,6 +1,7 @@
 package com.bulletnews.bulletnewsbackend.users;
 
 import com.bulletnews.bulletnewsbackend.users.dto.CreateUserRequest;
+import com.bulletnews.bulletnewsbackend.users.dto.UserResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +17,7 @@ public class AppUserController {
     private final AppUserService appUserService;
 
     @GetMapping("")
-    public List<AppUser> findAll() {
+    public List<UserResponse> findAll() {
         return appUserService.findAll();
     }
 

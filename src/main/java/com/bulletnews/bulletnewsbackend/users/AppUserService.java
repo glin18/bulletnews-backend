@@ -3,12 +3,15 @@ package com.bulletnews.bulletnewsbackend.users;
 import com.bulletnews.bulletnewsbackend.exceptions.custom.ResourceNotFoundException;
 import com.bulletnews.bulletnewsbackend.news.News;
 import com.bulletnews.bulletnewsbackend.users.dto.CreateUserRequest;
+import com.bulletnews.bulletnewsbackend.users.dto.UserResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -16,8 +19,8 @@ public class AppUserService {
 
     private final AppUserRepository appUserRepository;
 
-    public List<AppUser> findAll() {
-        return appUserRepository.findAll();
+    public List<UserResponse> findAll() {
+        return appUserRepository.findAll().stream().map(this::mapUserToUserResponse).collect(Collectors.toList());
     }
 
     public AppUser findByUuid(String uuid) {
@@ -46,6 +49,13 @@ public class AppUserService {
             user.getLikedNews().remove(news);
         }
         return appUserRepository.save(user);
+    }
+
+    private UserResponse mapUserToUserResponse(AppUser user){
+        UserResponse userResponse = new UserResponse();
+        BeanUtils.copyProperties(user, userResponse);
+        userResponse.setLikedNews(user.getLikedNews().stream().map(News::getId).collect(Collectors.toList()));
+        return userResponse;
     }
 
     private AppUser updateUserLoginTime(AppUser user) {
