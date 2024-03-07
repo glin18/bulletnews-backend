@@ -60,6 +60,8 @@ public class NewsService {
                 .map(Category::getName)
                 .orElse("No Category");
         newsResponse.setCategoryName(categoryName);
+        newsResponse.setUsersWhoLiked(news.getUsersWhoLiked().stream().map(AppUser::getUuid)
+                .collect(Collectors.toList()));
         return newsResponse;
     }
 

@@ -2,6 +2,8 @@ package com.bulletnews.bulletnewsbackend.news.dto;
 
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 public class NewsResponse {
 
@@ -15,5 +17,6 @@ public class NewsResponse {
     private String content;
     private String sourceName;
     private String categoryName;
+    private List<String> usersWhoLiked;
 
 }
