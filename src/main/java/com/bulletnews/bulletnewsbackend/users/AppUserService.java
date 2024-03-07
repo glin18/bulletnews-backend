@@ -1,6 +1,7 @@
 package com.bulletnews.bulletnewsbackend.users;
 
 import com.bulletnews.bulletnewsbackend.exceptions.custom.ResourceNotFoundException;
+import com.bulletnews.bulletnewsbackend.news.News;
 import com.bulletnews.bulletnewsbackend.users.dto.CreateUserRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,11 @@ public class AppUserService {
         return appUserRepository.findAll();
     }
 
+    public AppUser findByUuid(String uuid) {
+        return appUserRepository.findByUuid(uuid)
+                .orElseThrow(() -> new ResourceNotFoundException("App User with uuid of " + uuid + " not found"));
+    }
+
     public AppUser createOrUpdateUser(CreateUserRequest createUserRequest) {
         String uuid = createUserRequest.getUuid();
         Optional<AppUser> existingUser = appUserRepository.findByUuid(uuid);
@@ -32,12 +38,22 @@ public class AppUserService {
         appUserRepository.deleteById(id);
     }
 
-    private AppUser updateUserLoginTime(AppUser user){
+    public AppUser likeNews(News news, String uuid){
+        AppUser user = findByUuid(uuid);
+        if (!user.getLikedNews().contains(news)) {
+            user.getLikedNews().add(news);
+        } else {
+            user.getLikedNews().remove(news);
+        }
+        return appUserRepository.save(user);
+    }
+
+    private AppUser updateUserLoginTime(AppUser user) {
         user.setLastLoginTime(Instant.now());
         return appUserRepository.save(user);
     }
 
-    private AppUser createUser(CreateUserRequest createUserRequest){
+    private AppUser createUser(CreateUserRequest createUserRequest) {
         AppUser user = AppUser.builder()
                 .uuid(createUserRequest.getUuid())
                 .email(createUserRequest.getEmail())

@@ -2,11 +2,16 @@ package com.bulletnews.bulletnewsbackend.news;
 
 import com.bulletnews.bulletnewsbackend.news.dto.NewsResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+@Slf4j
 @RequiredArgsConstructor
 @RequestMapping("/api")
 public class NewsController {
@@ -21,6 +26,12 @@ public class NewsController {
     @GetMapping("/category/{id}/news")
     public List<NewsResponse> findAllByCategoryId(@PathVariable Long id){
         return newsService.findAllByCategoryId(id);
+    }
+
+    @PostMapping("/news/{newsId}/like")
+    public ResponseEntity<Void> likeArticle(@PathVariable Long newsId, @AuthenticationPrincipal Jwt jwt){
+        newsService.likeNews(newsId, jwt.getSubject());
+        return ResponseEntity.ok().build();
     }
 
 }
