@@ -7,6 +7,7 @@ import com.bulletnews.bulletnewsbackend.newsapi.NewsApiResponse;
 import com.bulletnews.bulletnewsbackend.users.AppUser;
 import com.bulletnews.bulletnewsbackend.users.AppUserService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,6 +17,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
+@Slf4j
 @Service
 public class NewsService {
 
@@ -76,5 +78,10 @@ public class NewsService {
             news.getUsersWhoLiked().remove(user);
         }
         newsRepository.save(news);
+    }
+
+    public NewsResponse findById(Long id) {
+        return newsToNewsResponseMapper(newsRepository.findById(id).
+                orElseThrow(() -> new ResourceNotFoundException("News with id " + id + " not found")));
     }
 }

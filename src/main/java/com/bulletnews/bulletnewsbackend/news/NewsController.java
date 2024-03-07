@@ -23,6 +23,11 @@ public class NewsController {
         return newsService.findAll();
     }
 
+    @GetMapping("/news/{id}")
+    public NewsResponse findById(@PathVariable Long id){
+        return newsService.findById(id);
+    }
+
     @GetMapping("/category/{id}/news")
     public List<NewsResponse> findAllByCategoryId(@PathVariable Long id){
         return newsService.findAllByCategoryId(id);
