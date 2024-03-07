@@ -51,6 +51,16 @@ public class AppUserService {
         return appUserRepository.save(user);
     }
 
+    public AppUser saveNews(News news, String uuid) {
+        AppUser user = findByUuid(uuid);
+        if (!user.getSavedNews().contains(news)) {
+            user.getSavedNews().add(news);
+        } else {
+            user.getSavedNews().remove(news);
+        }
+        return appUserRepository.save(user);
+    }
+
     private UserResponse mapUserToUserResponse(AppUser user){
         UserResponse userResponse = new UserResponse();
         BeanUtils.copyProperties(user, userResponse);
@@ -71,5 +81,4 @@ public class AppUserService {
                 .build();
         return appUserRepository.save(user);
     }
-
 }

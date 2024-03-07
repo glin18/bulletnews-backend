@@ -80,8 +80,23 @@ public class NewsService {
         newsRepository.save(news);
     }
 
+    @Transactional
+    public void saveNews(Long newsId, String uuid) {
+        News news = newsRepository.findById(newsId)
+                .orElseThrow(() -> new ResourceNotFoundException("News with ID of " + newsId + " not found"));
+        AppUser user = appUserService.saveNews(news, uuid);
+        if (!news.getUsersWhoSaved().contains(user)) {
+            news.getUsersWhoSaved().add(user);
+        } else {
+            news.getUsersWhoSaved().remove(user);
+        }
+        newsRepository.save(news);
+    }
+
     public NewsResponse findById(Long id) {
         return newsToNewsResponseMapper(newsRepository.findById(id).
                 orElseThrow(() -> new ResourceNotFoundException("News with id " + id + " not found")));
     }
+
+
 }

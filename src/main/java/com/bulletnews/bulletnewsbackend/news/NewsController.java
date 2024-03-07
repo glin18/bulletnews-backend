@@ -39,4 +39,10 @@ public class NewsController {
         return ResponseEntity.ok().build();
     }
 
+    @PostMapping("/news/{newsId}/save")
+    public ResponseEntity<Void> saveArticle(@PathVariable Long newsId, @AuthenticationPrincipal Jwt jwt){
+        newsService.saveNews(newsId, jwt.getSubject());
+        return ResponseEntity.ok().build();
+    }
+
 }
