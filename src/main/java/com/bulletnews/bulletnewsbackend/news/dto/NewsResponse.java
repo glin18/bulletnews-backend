@@ -18,5 +18,6 @@ public class NewsResponse {
     private String sourceName;
     private String categoryName;
     private List<String> usersWhoLiked;
+    private List<String> usersWhoSaved;
 
 }

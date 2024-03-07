@@ -55,18 +55,6 @@ public class NewsService {
         return newsList.stream().map(this::newsToNewsResponseMapper).collect(Collectors.toList());
     }
 
-    private NewsResponse newsToNewsResponseMapper(News news) {
-        NewsResponse newsResponse = new NewsResponse();
-        BeanUtils.copyProperties(news, newsResponse);
-        String categoryName = Optional.ofNullable(news.getCategory())
-                .map(Category::getName)
-                .orElse("No Category");
-        newsResponse.setCategoryName(categoryName);
-        newsResponse.setUsersWhoLiked(news.getUsersWhoLiked().stream().map(AppUser::getUuid)
-                .collect(Collectors.toList()));
-        return newsResponse;
-    }
-
     @Transactional
     public void likeNews(Long newsId, String uuid) {
         News news = newsRepository.findById(newsId)
@@ -98,5 +86,18 @@ public class NewsService {
                 orElseThrow(() -> new ResourceNotFoundException("News with id " + id + " not found")));
     }
 
+    private NewsResponse newsToNewsResponseMapper(News news) {
+        NewsResponse newsResponse = new NewsResponse();
+        BeanUtils.copyProperties(news, newsResponse);
+        String categoryName = Optional.ofNullable(news.getCategory())
+                .map(Category::getName)
+                .orElse("No Category");
+        newsResponse.setCategoryName(categoryName);
+        newsResponse.setUsersWhoLiked(news.getUsersWhoLiked().stream().map(AppUser::getUuid)
+                .collect(Collectors.toList()));
+        newsResponse.setUsersWhoSaved(news.getUsersWhoSaved().stream().map(AppUser::getUuid)
+                .collect(Collectors.toList()));
+        return newsResponse;
+    }
 
 }
