@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -100,4 +101,9 @@ public class NewsService {
         return newsResponse;
     }
 
+    public List<NewsResponse> findSavedNewsByUuid(String uuid) {
+        AppUser user = appUserService.findByUuid(uuid);
+        Set<News> news = user.getSavedNews();
+        return news.stream().map(this::newsToNewsResponseMapper).collect(Collectors.toList());
+    }
 }

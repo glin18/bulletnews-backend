@@ -33,6 +33,11 @@ public class NewsController {
         return newsService.findAllByCategoryId(id);
     }
 
+    @GetMapping("/news/saved")
+    public List<NewsResponse> findSavedNews(@AuthenticationPrincipal Jwt jwt){
+        return newsService.findSavedNewsByUuid(jwt.getSubject());
+    }
+
     @PostMapping("/news/{newsId}/like")
     public ResponseEntity<Void> likeArticle(@PathVariable Long newsId, @AuthenticationPrincipal Jwt jwt){
         newsService.likeNews(newsId, jwt.getSubject());
