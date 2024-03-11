@@ -1,5 +1,7 @@
 package com.bulletnews.bulletnewsbackend.comments;
 
+import com.bulletnews.bulletnewsbackend.exceptions.custom.ResourceNotFoundException;
+import com.bulletnews.bulletnewsbackend.exceptions.custom.ForbiddenException;
 import com.bulletnews.bulletnewsbackend.news.News;
 import com.bulletnews.bulletnewsbackend.news.NewsService;
 import com.bulletnews.bulletnewsbackend.users.AppUser;
@@ -54,5 +56,18 @@ public class CommentService {
         return comments.stream()
                 .map(this::mapCommentToResponse)
                 .collect(Collectors.toList());
+    }
+
+    public void deleteById(Long id, String uuid) {
+        Comment comment = findById(id);
+        if (!comment.getUser().getUuid().equals(uuid)) {
+            throw new ForbiddenException("You are not authorized to delete this comment");
+        }
+        commentRepository.delete(comment);
+    }
+
+    public Comment findById(Long id) {
+        return commentRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Comment with id " + id + " not found"));
     }
 }

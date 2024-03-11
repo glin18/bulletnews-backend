@@ -1,6 +1,7 @@
 package com.bulletnews.bulletnewsbackend.comments;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
@@ -28,6 +29,12 @@ public class CommentController {
     @GetMapping("/news/{id}")
     public List<CommentResponse> getCommentByNewsId(@PathVariable Long id) {
         return commentService.findAllByNewsId(id);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteCommentById(@PathVariable Long id, @AuthenticationPrincipal Jwt jwt){
+        commentService.deleteById(id, jwt.getSubject());
+        return ResponseEntity.noContent().build();
     }
 
 }
