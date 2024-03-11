@@ -48,4 +48,11 @@ public class CommentService {
                 .ifPresent(response::setUserId);
         return response;
     }
+
+    public List<CommentResponse> findAllByNewsId(Long id) {
+        List<Comment> comments = commentRepository.findAllByNewsId(id);
+        return comments.stream()
+                .map(this::mapCommentToResponse)
+                .collect(Collectors.toList());
+    }
 }

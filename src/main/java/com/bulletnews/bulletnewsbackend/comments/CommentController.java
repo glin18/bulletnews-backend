@@ -15,14 +15,19 @@ public class CommentController {
     private final CommentService commentService;
 
     @GetMapping("")
-    public List<CommentResponse> findAll(){
+    public List<CommentResponse> findAll() {
         return commentService.findAll();
     }
 
     @PostMapping("/news/{id}")
     public CommentResponse createComment(@RequestBody CreateCommentRequest request, @PathVariable Long id,
-                                 @AuthenticationPrincipal Jwt jwt){
+                                         @AuthenticationPrincipal Jwt jwt) {
         return commentService.createComment(request, id, jwt.getSubject());
+    }
+
+    @GetMapping("/news/{id}")
+    public List<CommentResponse> getCommentByNewsId(@PathVariable Long id) {
+        return commentService.findAllByNewsId(id);
     }
 
 }
