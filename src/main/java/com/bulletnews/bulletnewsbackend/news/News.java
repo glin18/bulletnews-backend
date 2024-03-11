@@ -1,6 +1,7 @@
 package com.bulletnews.bulletnewsbackend.news;
 
 import com.bulletnews.bulletnewsbackend.category.Category;
+import com.bulletnews.bulletnewsbackend.comments.Comments;
 import com.bulletnews.bulletnewsbackend.users.AppUser;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -8,7 +9,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Builder
@@ -53,5 +56,8 @@ public class News {
 
     @ManyToMany(mappedBy = "savedNews", fetch = FetchType.LAZY)
     private Set<AppUser> usersWhoSaved = new HashSet<>();
+
+    @OneToMany(mappedBy = "news", fetch = FetchType.LAZY)
+    private List<Comments> comments = new ArrayList<>();
 
 }
