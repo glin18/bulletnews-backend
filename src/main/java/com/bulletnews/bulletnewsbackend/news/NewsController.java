@@ -25,7 +25,7 @@ public class NewsController {
 
     @GetMapping("/news/{id}")
     public NewsResponse findById(@PathVariable Long id){
-        return newsService.findById(id);
+        return newsService.findResponseById(id);
     }
 
     @GetMapping("/category/{id}/news")

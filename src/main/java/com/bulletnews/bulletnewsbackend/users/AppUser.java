@@ -1,11 +1,14 @@
 package com.bulletnews.bulletnewsbackend.users;
 
+import com.bulletnews.bulletnewsbackend.comments.Comment;
 import com.bulletnews.bulletnewsbackend.news.News;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Builder
@@ -43,5 +46,8 @@ public class AppUser {
             inverseJoinColumns = @JoinColumn(name = "news_id")
     )
     private Set<News> savedNews = new HashSet<>();
+
+    @OneToMany(fetch = FetchType.LAZY)
+    private List<Comment> comments = new ArrayList<>();
 
 }

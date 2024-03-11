@@ -82,9 +82,13 @@ public class NewsService {
         newsRepository.save(news);
     }
 
-    public NewsResponse findById(Long id) {
-        return newsToNewsResponseMapper(newsRepository.findById(id).
-                orElseThrow(() -> new ResourceNotFoundException("News with id " + id + " not found")));
+    public NewsResponse findResponseById(Long id) {
+        return newsToNewsResponseMapper(findById(id));
+    }
+
+    public News findById(Long id) {
+        return newsRepository.findById(id).
+                orElseThrow(() -> new ResourceNotFoundException("News with id " + id + " not found"));
     }
 
     private NewsResponse newsToNewsResponseMapper(News news) {
