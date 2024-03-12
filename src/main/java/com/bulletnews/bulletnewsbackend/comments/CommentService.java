@@ -48,6 +48,9 @@ public class CommentService {
         Optional.ofNullable(comment.getUser())
                 .map(AppUser::getId)
                 .ifPresent(response::setUserId);
+        Optional.ofNullable(comment.getUser())
+                .map(AppUser::getUuid)
+                .ifPresent(response::setUuid);
         return response;
     }
 

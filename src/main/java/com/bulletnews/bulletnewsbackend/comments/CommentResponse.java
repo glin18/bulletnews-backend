@@ -13,4 +13,5 @@ public class CommentResponse {
     private Instant createdTime;
     private Long newsId;
     private Long userId;
+    private String uuid;
 }
